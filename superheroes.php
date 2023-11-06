@@ -1,5 +1,6 @@
 <?php
 
+
 $superheroes = [
     [
         "id" => 1,
@@ -58,17 +59,41 @@ $superheroes = [
     [
         "id" => 10,
         "name" => "Wanda Maximoff",
-        "alias" => "Scarlett Witch",
+        "alias" => "Scarlet Witch",
         "biography" => "Notably powerful, Wanda Maximoff has fought both against and with the Avengers, attempting to hone her abilities and do what she believes is right to help the world.",
     ],
 ];
 
+
+
+// Get the query parameter
+$name = $_GET["name"] ?? null;
+// echo "Name of the hero: $name";
+// echo json_encode($superheroes, JSON_PRETTY_PRINT);
+
+
+// Filter the superheroes array based on the provided name
+$filteredSuperheroes = array_filter($superheroes, function ($superhero) use ($name) {
+    return $superhero['name'] === $name || $superhero['alias'] === $name;
+});
+
+
+if (!empty($name)) {
+    
+    // Set the "Content-Type" header to indicate JSON response
+    header("Content-Type: application/json");
+    // Display the filtered data if a name is provided
+
+    echo json_encode($filteredSuperheroes);
+} else {
+    // Display a list of superheroes in an unordered list if no name is provided
+    echo '<ul>';
+    foreach ($superheroes as $superhero) {
+        echo '<li>' . $superhero['alias'] . '</li>';
+    }
+    echo '</ul>';
+}
+
 ?>
 
-<ul>
-    <?php foreach ($superheroes as $superhero): ?>
-        <li>
-            <?= $superhero['alias']; ?>
-        </li>
-    <?php endforeach; ?>
-</ul>
+
