@@ -68,8 +68,9 @@ $superheroes = [
 
 // Get the query parameter
 $name = $_GET["name"] ?? null;
-// echo "Name of the hero: $name";
-// echo json_encode($superheroes, JSON_PRETTY_PRINT);
+
+// Sanitize the name as a string
+$name = filter_input(INPUT_GET, 'name', FILTER_SANITIZE_STRING);
 
 
 // Filter the superheroes array based on the provided name
