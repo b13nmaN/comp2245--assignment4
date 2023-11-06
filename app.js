@@ -14,11 +14,17 @@ window.onload = function () {
 
         try {
           const superhero = await searchSuperhero();
+          console.log(superhero);
           // Iterate through the properties of the object
-          const items = getItemsFromObject(superhero);
-          console.log(items);
-          
-          // alert(response);
+          if (superhero.type === "json") {
+            const items = getItemsFromObject(superhero.data);
+            // console.log(items);
+            renderHero(items);
+            // console.log(items);
+          } else {
+
+            renderHeroList(superhero.data)
+          }
         } catch (error) {
           console.error(error);
         }
@@ -33,11 +39,11 @@ window.onload = function () {
         if (contentType && contentType.includes("application/json")) {
           const data = await response.json();
           console.log("json: ",typeof data);
-          return data;
+          return {"data":data, "type":"json" };
         } else {
           const data = await response.text();
           console.log("text: ",typeof data);
-          return data;
+          return {"data":data, "type":"string" };
         }
       } else {
         throw new Error("Failed to fetch PHP page");
@@ -47,6 +53,7 @@ window.onload = function () {
     }
   }
   
+  // This function returns all the items from the object
   function getItemsFromObject(object) {
     const items = [];
     for (const key in object) {
@@ -63,18 +70,29 @@ window.onload = function () {
     return items;
   }
   
-  function renderItems(items) {
-    const table = document.getElementById("table");
-    table.innerHTML = "";
-    items.forEach((item) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${item.id}</td>
-        <td>${item.name}</td>
-        <td>${item.alias}</td>
-        <td>${item.biography}</td>
-      `;
-      table.appendChild(row);
+
+  // This function renders items provided
+  function renderHero(items) {
+
+    if (items.length === 0) {
+      result.innerHTML = '<h5>Superhero not found</h5>'
+      return;
+    }
+
+    else if (items.length > 0) {
+      items.forEach((item) => {
+
+        result.innerHTML = `
+        <h3>${item.name}</h3>
+        <h4>${item.alias}</h4>
+        <p>${item.biography}</p>
+        `;
     });
+  } 
   }
+
+  function renderHeroList(list){
+    return result.innerHTML = list
+  }
+
 }
