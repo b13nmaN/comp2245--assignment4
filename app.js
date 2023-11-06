@@ -75,7 +75,7 @@ window.onload = function () {
   function renderHero(items) {
 
     if (items.length === 0) {
-      result.innerHTML = '<h5>Superhero not found</h5>'
+      result.innerHTML = '<h2>Superhero not found</h2>'
       return;
     }
 
@@ -84,7 +84,7 @@ window.onload = function () {
 
         result.innerHTML = `
         <h3>${item.name}</h3>
-        <h4>${item.alias}</h4>
+        <h4>A.K.A. ${item.alias}</h4>
         <p>${item.biography}</p>
         `;
     });
